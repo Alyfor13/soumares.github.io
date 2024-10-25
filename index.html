@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emploi du Temps - Soumare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #FF6F61, #6FA3EF);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0;
+        }
+        h2 {
+            margin: 20px 0;
+        }
+        .clock {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .schedule {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .day {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s;
+        }
+        .day:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .note {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            resize: none;
+            width: 90%;
+            height: 100px;
+        }
+        .colors {
+            background: linear-gradient(to right, #FF6F61, #6FA3EF, #FFC107, #4CAF50, #2196F3, #9C27B0, #FF9800, #FF5722, #009688, #673AB7, #3F51B5, #795548, #607D8B, #E91E63, #F44336, #FFEB3B, #CDDC39, #8BC34A, #FF9800, #FF5722, #FF6F61);
+            height: 200px;
+        }
+        .download-btn {
+            padding: 10px 20px;
+            background-color: #FFC107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Emploi du Temps - Soumare</h1>
+    <div class="clock" id="clock"></div>
+    
+    <h2>Mon Emploi du Temps</h2>
+    <div class="schedule">
+        <div class="day">
+            <div>Lundi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Mardi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Mercredi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Jeudi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Vendredi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Samedi</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+        <div class="day">
+            <div>Dimanche</div>
+            <textarea class="note" placeholder="Écrivez vos tâches ici..."></textarea>
+        </div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">Télécharger Mon Emploi du Temps</button>
+
+    <div class="colors"></div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('clock').innerHTML = now.toLocaleTimeString([], options);
+        }
+
+        function downloadSchedule() {
+            const notes = document.querySelectorAll('.note');
+            let content = '';
+            notes.forEach((note, index) => {
+                const dayName = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][index];
+                content += `${dayName}:\n${note.value}\n\n`;
+            });
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'emploi_du_temps.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('downloadBtn').addEventListener('click', downloadSchedule);
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Call once to avoid delay
+    </script>
+    
+</body>
+</html>
